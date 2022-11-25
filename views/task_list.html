@@ -48,7 +48,8 @@
       <tr>
         <th>ID</th>
         <th>タイトル</th>
-        <th>登録日</th>
+        <th>締め切り</th>
+        <th>ステータス</th>
         <th>状態</th>
       </tr>
 
@@ -57,7 +58,8 @@
       <tr>
         <td><a href="/task/{{ $task.ID }}">{{ $task.ID }}</a></td>
         <td>{{ $task.Title }}</td>
-        <td>{{ $task.CreatedAt }}</td>
+        <td>{{ $task.DueDate }}</td>
+        <td>{{ $task.Status }}</td>
         <td>{{ if $task.IsDone }}済{{ end }}</td>
       </tr>
 
