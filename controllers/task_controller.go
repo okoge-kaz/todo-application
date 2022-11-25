@@ -8,37 +8,28 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	database "github.com/okoge-kaz/todo-application/db"
+	"github.com/okoge-kaz/todo-application/models"
 )
 
 // TaskList renders list of tasks in DB
 func TaskList(ctx *gin.Context) {
-	// Get DB connection
-	db, err := database.GetConnection()
-	if err != nil {
-		Error(http.StatusInternalServerError, err.Error())(ctx)
-		return
-	}
-
 	// get login user
-	userID := sessions.Default(ctx).Get("user_key")
+	userID := sessions.Default(ctx).Get("user_key").(uint64)
 
 	// Get query parameter
 	keyword := ctx.Query("keyword")
 
 	// Get tasks in DB
 	var tasks []database.Task
-
-	// rails active record のようには書けないらしい
-	query := "SELECT  id, title, is_done, description, created_at FROM tasks INNER JOIN ownerships ON tasks.id = ownerships.task_id WHERE ownerships.user_id = ?"
+	var err error
 
 	switch {
 	case keyword != "":
-		// キーワード検索
-		err = db.Select(&tasks, query+" AND ( title LIKE ? OR description LIKE ? )", userID, "%"+keyword+"%", "%"+keyword+"%")
+		// keyword search
+		tasks, err = models.GetTaskByUserIDAndKeyword(int(userID), keyword)
 	default:
 		// 全件取得
-		// pixiv で ikumin さんに指摘されたが、SQLのパフォーマンス的にもこうするほうがよい
-		err = db.Select(&tasks, query, userID)
+		tasks, err = models.GetTaskByUserID(int(userID))
 	}
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
@@ -98,12 +89,14 @@ func NewTask(ctx *gin.Context) {
 	title := ctx.PostForm("title")
 	description := ctx.PostForm("description")
 	dueDate := ctx.PostForm("due_date")
+	status := ctx.PostForm("status")
 	priority := ctx.PostForm("priority")
 
 	// Insert a task with transaction
 	transaction := db.MustBegin()
 	// tasks table
-	result, err := transaction.Exec("INSERT INTO tasks (title, description, due_date, priority) VALUES (?, ?, ?, ?)", title, description, dueDate, priority)
+	result, err := transaction.Exec("INSERT INTO tasks (title, description, due_date, status, priority) VALUES (?, ?, ?, ?, ?)",
+		title, description, dueDate, status, priority)
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
 		return
@@ -177,6 +170,7 @@ func EditTask(ctx *gin.Context) {
 	title := ctx.PostForm("title")
 	is_done := ctx.PostForm("is_done")
 	description := ctx.PostForm("description")
+	status := ctx.PostForm("status")
 	dueDate := ctx.PostForm("due_date")
 	priority := ctx.PostForm("priority")
 
@@ -184,7 +178,8 @@ func EditTask(ctx *gin.Context) {
 	is_done_bool, _ := strconv.ParseBool(is_done)
 
 	// Update a task
-	result, err := db.Exec("UPDATE tasks SET title=?, is_done=?, description=?, due_date=?, priority=? WHERE id=?", title, is_done_bool, description, dueDate, priority, id)
+	result, err := db.Exec("UPDATE tasks SET title=?, is_done=?, description=?, status=?, due_date=?, priority=? WHERE id=?",
+		title, is_done_bool, description, status, dueDate, priority, id)
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
 		return
