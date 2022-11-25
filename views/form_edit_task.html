@@ -33,7 +33,27 @@
     </div>
     <div>
       <label>Description</label>
-      <textarea name="description">{{ .Task.Description }}</textarea>
+      <textarea name="description" value="{{ .Task.Description }}"></textarea>
+    </div>
+    <div class="task-form">
+      <label class="label">Due Date</label>
+      <input type="date" name="due_date" required value="{{ .Task.DueDate }}"/>
+    </div>
+    <div class="task-form">
+      <label class="label">Status</label>
+      <select name="status" required value="{{ .Task.Status }}">
+        <option value="todo">Todo</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
+      </select>
+    </div>
+    <div class="task-form">
+      <label class="label">Priority</label>
+      <select name="priority" required value="{{ .Task.Priority }}">
+        <option value="1">Low</option>
+        <option value="2">Medium</option>
+        <option value="3">High</option>
+      </select>
     </div>
     <div>
       <input type="submit" value="更新" />
