@@ -1,15 +1,31 @@
 {{ template "header" . }}
 <div class="container">
-  <h1>タスクの新規登録</h1>
+  <h1>Register New Task</h1>
   <form action="/task/new" method="POST">
-    <div><label>Title</label><input type="text" name="title" required /></div>
-    <div>
-      <label>Description</label>
+    <div class="task-form">
+      <label class="label">Title</label>
+      <input type="text" name="title" required/>
+    </div>
+    <div class="task-form">
+      <div>
+        <label>Description</label>
+      </div>
       <textarea name="description"></textarea>
     </div>
-    <br />
-    <input type="submit" value="登録" />
-    <a href="/list"><button type="button">戻る</button></a>
+    <div class="task-form">
+      <label class="label">Due Date</label>
+      <input type="date" name="due_date" required/>
+    </div>
+    <div class="task-form">
+      <label class="label">Priority</label>
+      <select name="priority">
+        <option value="1">Low</option>
+        <option value="2">Medium</option>
+        <option value="3">High</option>
+      </select>
+    </div>
+    <input type="submit" value="登録" class="search-button"/>
+    <a href="/list"><button type="button" class="search-button">戻る</button></a>
   </form>
 </div>
 {{ template "footer" }}

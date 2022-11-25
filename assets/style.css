@@ -107,3 +107,31 @@
 .table-view table tr {
   border-bottom: 1px solid #ddd;
 }
+
+.task-form {
+  margin: 30px auto;
+  width: 100%;
+}
+
+.label {
+  margin-right: 10px;
+}
+
+.task-form input {
+  margin: 10px 0px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+
+  width: 100%;
+  max-width: 300px;
+}
+
+.task-form textarea {
+  margin: 10px 0px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 300px;
+}
