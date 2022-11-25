@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 
-	"github.com/okoge-kaz/todo-application/service"
+	"github.com/okoge-kaz/todo-application/controllers"
 )
 
 func Init() *gin.Engine {
@@ -25,48 +25,48 @@ func Init() *gin.Engine {
 	engine.Static("/assets", "./assets")
 
 	// routing
-	engine.GET("/", service.Home)
-	engine.GET("/list", service.LoginCheck, service.TaskList)
+	engine.GET("/", controllers.Home)
+	engine.GET("/list", controllers.LoginCheck, controllers.TaskList)
 
 	taskGroup := engine.Group("/task")
-	taskGroup.Use(service.LoginCheck)
+	taskGroup.Use(controllers.LoginCheck)
 
 	// Grouping /task/xxx
 	{
 		// Create, Update, Delete
-		taskGroup.GET("/new", service.NewTaskForm)
-		taskGroup.POST("/new", service.NewTask)
+		taskGroup.GET("/new", controllers.NewTaskForm)
+		taskGroup.POST("/new", controllers.NewTask)
 
-		taskGroup.GET("/:id", service.TaskAccessCheck, service.ShowTask) // ":id" is a parameter
+		taskGroup.GET("/:id", controllers.TaskAccessCheck, controllers.ShowTask) // ":id" is a parameter
 		//:id
 		taskIDGroup := taskGroup.Group("/:id")
-		taskIDGroup.Use(service.TaskAccessCheck)
+		taskIDGroup.Use(controllers.TaskAccessCheck)
 		{
-			taskIDGroup.GET("/edit", service.EditTaskForm)
-			taskIDGroup.POST("/edit", service.EditTask)
-			taskIDGroup.GET("/delete", service.DeleteTask)
+			taskIDGroup.GET("/edit", controllers.EditTaskForm)
+			taskIDGroup.POST("/edit", controllers.EditTask)
+			taskIDGroup.GET("/delete", controllers.DeleteTask)
 		}
 	}
 
 	// user registration
-	engine.GET("/user/new", service.NewUserForm)
-	engine.POST("/user/new", service.RegisterUser)
+	engine.GET("/user/new", controllers.NewUserForm)
+	engine.POST("/user/new", controllers.RegisterUser)
 
 	// logged in user
 	userGroup := engine.Group("/user")
-	userGroup.Use(service.LoginCheck)
+	userGroup.Use(controllers.LoginCheck)
 	{
 		// change password
-		userGroup.GET("/change_password", service.ChangePasswordForm)
-		userGroup.POST("/change_password", service.ChangePassword)
+		userGroup.GET("/change_password", controllers.ChangePasswordForm)
+		userGroup.POST("/change_password", controllers.ChangePassword)
 		// delete user
-		userGroup.GET("/delete", service.DeleteUser)
+		userGroup.GET("/delete", controllers.DeleteUser)
 	}
 	// login
-	engine.GET("/login", service.LoginForm)
-	engine.POST("/login", service.Login)
+	engine.GET("/login", controllers.LoginForm)
+	engine.POST("/login", controllers.Login)
 	// logout
-	engine.GET("/logout", service.LoginCheck, service.Logout)
+	engine.GET("/logout", controllers.LoginCheck, controllers.Logout)
 
 	return engine
 }
