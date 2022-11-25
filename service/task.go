@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	database "todolist.go/db"
+	database "github.com/okoge-kaz/todo-application/db"
 )
 
 // TaskList renders list of tasks in DB
