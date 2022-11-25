@@ -34,7 +34,7 @@ func TaskList(ctx *gin.Context) {
 	switch {
 	case keyword != "":
 		// キーワード検索
-		err = db.Select(&tasks, query+"AND ( title LIKE ? OR description LIKE ? )", userID, "%"+keyword+"%", "%"+keyword+"%")
+		err = db.Select(&tasks, query+" AND ( title LIKE ? OR description LIKE ? )", userID, "%"+keyword+"%", "%"+keyword+"%")
 	default:
 		// 全件取得
 		// pixiv で ikumin さんに指摘されたが、SQLのパフォーマンス的にもこうするほうがよい
