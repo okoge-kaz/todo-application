@@ -1,0 +1,22 @@
+{{ template "header" . }}
+<h1>Task: {{ .Title }}</h1>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Created at</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>{{ .ID }}</td>
+    <td>{{ .Description }}</td>
+    <td>{{ .CreatedAt }}</td>
+    <td>
+      <input type="checkbox" {{ if .IsDone }}checked {{ end }}disabled />済
+    </td>
+  </tr>
+</table>
+<a href="/list"><button type="button">リストへ戻る</button></a>
+<a href="/task/{{ .ID }}/edit"><button type="button">編集</button></a>
+<button type="button" onclick="confirm_delete({{ .ID }})">削除</button>
+{{ template "footer" }}

@@ -1,0 +1,49 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    tty: true
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: sysdes
+      DB_PASSWORD: sysdes
+      DB_NAME: sysdes_todolist_db
+    volumes:
+      - .:/go/src/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    build:
+      context: ./docker/db
+      dockerfile: Dockerfile
+    platform: linux/x86_64
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sysdes_todolist_db
+      MYSQL_USER: sysdes
+      MYSQL_PASSWORD: sysdes
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+      - ./docker/db/data:/var/lib/mysql  ## uncomment to keep the data
+    ports:
+      - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - 8080:80
+    depends_on:
+      - db

@@ -1,0 +1,23 @@
+{{ template "header" . }}
+<h1>TODO List</h1>
+
+<div>
+  <ul>
+    <li><a href="/list">登録済みタスク一覧</a></li>
+    <li><a href="/user/new">ユーザ登録</a></li>
+    <li><a href="/login">ログイン</a></li>
+  </ul>
+</div>
+
+<div>
+  <ul>
+    {{ if .IsLoggedIn }}
+    <li><a href="/user/change_password">パスワード変更</a></li>
+    <li><a href="/logout">ログアウト</a></li>
+    <li><a href="/task/new">タスクの新規登録</a></li>
+    <li><a href="/user/delete">ユーザー削除</a></li>
+    {{ end }}
+  </ul>
+</div>
+
+{{ template "footer" }}

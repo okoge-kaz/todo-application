@@ -1,0 +1,13 @@
+{{ template "header" . }}
+<h1>タスクの新規登録</h1>
+<form action="/task/new" method="POST">
+  <div><label>Title</label><input type="text" name="title" required /></div>
+  <div>
+    <label>Description</label>
+    <textarea name="description"></textarea>
+  </div>
+  <br />
+  <input type="submit" value="登録" />
+  <a href="/list"><button type="button">戻る</button></a>
+</form>
+{{ template "footer" }}
