@@ -47,5 +47,5 @@ func GetConnection() (*sqlx.DB, error) {
 	if _db != nil {
 		return _db, nil
 	}
-	return nil, errors.New("Connection is not established")
+	return nil, errors.New("connection is not established")
 }
