@@ -1,23 +1,29 @@
 {{ template "header" . }}
-<h1>TODO List</h1>
+<div class="container">
+  <h1>Todo Application</h1>
 
-<div>
-  <ul>
-    <li><a href="/list">登録済みタスク一覧</a></li>
-    <li><a href="/user/new">ユーザ登録</a></li>
-    <li><a href="/login">ログイン</a></li>
-  </ul>
-</div>
+  <div class="description">
+    <p>Tokyo Institute of Technology (2022 Q3) Workshop on System Design</p>
+  </div>
 
-<div>
-  <ul>
-    {{ if .IsLoggedIn }}
-    <li><a href="/user/change_password">パスワード変更</a></li>
-    <li><a href="/logout">ログアウト</a></li>
-    <li><a href="/task/new">タスクの新規登録</a></li>
-    <li><a href="/user/delete">ユーザー削除</a></li>
-    {{ end }}
-  </ul>
+  <div>
+    <ul>
+      <li><a href="/list">登録済みタスク一覧</a></li>
+      <li><a href="/user/new">ユーザ登録</a></li>
+      <li><a href="/login">ログイン</a></li>
+    </ul>
+  </div>
+
+  <div>
+    <ul>
+      {{ if .IsLoggedIn }}
+      <li><a href="/user/change_password">パスワード変更</a></li>
+      <li><a href="/logout">ログアウト</a></li>
+      <li><a href="/task/new">タスクの新規登録</a></li>
+      <li><a href="/user/delete">ユーザー削除</a></li>
+      {{ end }}
+    </ul>
+  </div>
 </div>
 
 {{ template "footer" }}
