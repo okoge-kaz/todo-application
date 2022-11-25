@@ -12,6 +12,8 @@ type Task struct {
 	Description string    `db:"description"`
 	CreatedAt   time.Time `db:"created_at"`
 	IsDone      bool      `db:"is_done"`
+	DueDate     time.Time `db:"due_date"`
+	Priority    int       `db:"priority"`
 }
 
 type User struct {

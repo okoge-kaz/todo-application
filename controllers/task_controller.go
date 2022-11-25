@@ -97,11 +97,13 @@ func NewTask(ctx *gin.Context) {
 	// Get form data
 	title := ctx.PostForm("title")
 	description := ctx.PostForm("description")
+	dueDate := ctx.PostForm("due_date")
+	priority := ctx.PostForm("priority")
 
 	// Insert a task with transaction
 	transaction := db.MustBegin()
 	// tasks table
-	result, err := transaction.Exec("INSERT INTO tasks (title, description) VALUES (?, ?)", title, description)
+	result, err := transaction.Exec("INSERT INTO tasks (title, description, due_date, priority) VALUES (?, ?, ?, ?)", title, description, dueDate, priority)
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
 		return
@@ -175,12 +177,14 @@ func EditTask(ctx *gin.Context) {
 	title := ctx.PostForm("title")
 	is_done := ctx.PostForm("is_done")
 	description := ctx.PostForm("description")
+	dueDate := ctx.PostForm("due_date")
+	priority := ctx.PostForm("priority")
 
 	// 型変換
 	is_done_bool, _ := strconv.ParseBool(is_done)
 
 	// Update a task
-	result, err := db.Exec("UPDATE tasks SET title=?, is_done=?, description=? WHERE id=?", title, is_done_bool, description, id)
+	result, err := db.Exec("UPDATE tasks SET title=?, is_done=?, description=?, due_date=?, priority=? WHERE id=?", title, is_done_bool, description, dueDate, priority, id)
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
 		return
