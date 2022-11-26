@@ -78,9 +78,10 @@ func ChangePasswordForm(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "change_password_form.html", gin.H{"Title": "Change password"})
 }
 
-func ChangePassword(ctx *gin.Context) {
+func ChangeUserInfo(ctx *gin.Context) {
 	// フォームデータの受け取り
 	username := ctx.PostForm("username")
+	newUsername := ctx.PostForm("new_username")
 	oldPassword := ctx.PostForm("old_password")
 	newPassword := ctx.PostForm("new_password")
 
@@ -113,8 +114,8 @@ func ChangePassword(ctx *gin.Context) {
 		return
 	}
 
-	// update password
-	_, err = db.Exec("UPDATE users SET password = ? WHERE id = ?", hash(newPassword), user.ID)
+	// update username and password
+	_, err = db.Exec("UPDATE users SET name=?, password=? WHERE id=?", newUsername, hash(newPassword), user.ID)
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
 		return

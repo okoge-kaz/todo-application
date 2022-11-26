@@ -58,7 +58,7 @@ func Init() *gin.Engine {
 	{
 		// change password
 		userGroup.GET("/change_password", controllers.ChangePasswordForm)
-		userGroup.POST("/change_password", controllers.ChangePassword)
+		userGroup.POST("/change_password", controllers.ChangeUserInfo)
 		// delete user
 		userGroup.GET("/delete", controllers.DeleteUser)
 	}
