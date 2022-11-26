@@ -113,6 +113,172 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 #### 2.1 基本仕様
 
+- S-1.1
+
+  - Entity: Task, User
+
+    「ユーザはタスクの作成（登録），閲覧，削除，編集を行うことができる」を実現するために、以下のような entity を設計した。
+
+    ```go
+    type Task struct {
+      ID          uint64    `db:"id"`
+      Title       string    `db:"title"`
+      Description string    `db:"description"`
+      CreatedAt   time.Time `db:"created_at"`
+      IsDone      bool      `db:"is_done"`
+      Status      string    `db:"status"`
+      DueDate     time.Time `db:"due_date"`
+      Priority    int       `db:"priority"`
+    }
+
+    type User struct {
+      ID       uint64 `db:"id"`
+      Name     string `db:"name"`
+      Password []byte `db:"password"`
+    }
+    ```
+
+    **追加**した項目は、Task.Description, Task.Status, Task.DueDate, Task.Priority である。
+
+    - Task.Description: タスクの詳細を記述する
+    - Task.Status: タスクの状態を記述する("TODO", "IN PROGRESS", "DONE" のいずれか)
+    - Task.DueDate: タスクの期限を記述する
+    - Task.Priority: タスクの優先度を記述する(3 が最高, 1 が最低)
+
+  - Controller
+
+    ユーザーからのリクエストにより、Task の CRUD 操作を行うのは `controllers/task_controller.go` である。
+
+    (一部のデータベース操作に関しては、`models/task.go` に分離している。これは、controller の責務と、DB の責務を分離するためである。)
+
+    以下に、ユーザー操作と、`controllers/task_controller.go` での処理の対応を示す。
+
+    | ユーザー操作     | `controllers/task_controller.go` での処理 |
+    | :--------------- | :---------------------------------------- |
+    | タスクの作成     | `CreateTask`                              |
+    | タスクの閲覧     | `GetTask`                                 |
+    | タスクの削除     | `DeleteTask`                              |
+    | タスクの編集     | `EditTask`                                |
+    | タスクの一覧表示 | `GetTasks`                                |
+
+    Task の完了状態(`Task.IsDone`), Task の状態(`Task.Status`)の変更は、`EditTask` で行える。
+
+    - `CreateTask`: タスクの作成
+
+      session からユーザー ID を取得し、ユーザー ID をもとにタスクを作成する。
+      トランザクションを用いて、タスクの作成と、タスクの作成者を紐付ける ownership の作成を atomic に行う。
+
+      該当箇所: `/controllers/task_controller.go` [L87-L135](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L87-L135)
+
+    - `GetTask`: タスクの閲覧
+
+      `task/:id`の id を取得し、その id をもとにタスクを取得する。
+      タスクの作成者であるかどうかをチェックし、作成者でなければ閲覧できない。(アクセスチェックは `controllers/user_controller.go` `TaskAccessCheck` で行う。 該当箇所: [L177-L188](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L177-L188))
+
+      該当箇所: `/controllers/task_controller.go` [L61-L79](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L61-L79)
+
+    - `DeleteTask`: タスクの削除
+
+      `task/:id`の id を取得し、その id をもとにタスクを削除する。
+      タスクの作成者であるかどうかをチェックし、作成者でなければ削除できない。(アクセスチェックは `controllers/user_controller.go` `TaskAccessCheck` で行う。 (前述)
+
+      該当箇所: `/controllers/task_controller.go` [L202-L227](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L202-L227)
+
+    - `EditTask`: タスクの編集
+
+      `task/:id`の id を取得し、その id をもとにタスクを取得する。
+      タスクの作成者であるかどうかをチェックし、作成者でなければ編集できない。(アクセスチェックは `controllers/user_controller.go` `TaskAccessCheck` で行う。 (前述)
+
+      該当箇所: `/controllers/task_controller.go` [L160-L199](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L160-L199)
+
+    - `GetTasks`: タスクの一覧表示
+
+      タスクの一覧を取得する。期限が近い順, 優先度が高い順でソートして表示する。ステータスによる絞り込み機能、タイトルまたは Description による keyword 検索機能についても実装している。
+
+      該当箇所: `/controllers/task_controller.go` [L15-L58](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L15-L58)
+
+  - View
+
+    ユーザーからの画面遷移は以下(エンドポイントと View の対応)
+
+  - タスクの作成 `/task/new`
+
+    ![](/public/task-new.png)
+
+  - タスクの閲覧 `/task/:id`
+
+    ![](/public/task-id.png)
+
+  - タスク一覧表示 `/list`
+
+    ![](/public/task-list.png)
+
+  - タスクの編集 `/task/:id/edit`
+
+    ![](/public/task-edit.png)
+
+  - タスクの削除 `/task/:id/delete`
+
+    `/task/:id`の削除ボタン
+
+- S-1.2
+
+  「タスク検索機能を持つ」を`/list`に実装した。
+  実際の検索画面は以下
+
+  ![](/public/task-search.png)
+
+  具体的には以下の機能を実装した。
+
+  - keyword 検索機能
+
+    タスクの Title または Description に keyword が含まれるタスクを検索する。(LIKE 検索)
+
+    該当箇所: `/controllers/task_controller.go` [L43-L50](https://github.com/okoge-kaz/todo-application/blob/main/controllers/task_controller.go#L43-L50)
+
+    具体的な SQL については、`models/task.go`に分離して記述している。
+
+    該当箇所: `/models/task.go` [L8-L48](https://github.com/okoge-kaz/todo-application/blob/main/models/task.go#L8-L48)
+
+  - ステータスによる絞り込み機能
+
+    タスクのステータスによって絞り込みを行う。
+
+    Todo, In Progress, Done の 3 つのステータスを選択できる。
+    選択したステータスのタスクのみを表示する。
+
+    該当箇所: 前述の keyword 検索機能と同様に、`models/task.go`に分離して記述している。
+
+- S-1.3
+
+  「ログイン機能を持つ」を実装した。
+
+- S-1.4
+
+  「簡単なアカウント管理機能を持つ」を実装した。
+
+- S-2.1
+
+  「タスクに優先度や締切の概念を追加し，優先度に応じた強調表示，締切までのカウントダウンなどを表示する」を部分的に実装した。
+
+  タスクの優先度(`task.Priority`)、期限(`task.Deadline`)を追加した。また、期限、優先度による一覧表示時のソートを実現した。
+
+  しかし、カウントダウン機能は実装できていない。
+
+  期限、優先度によるソートは`models/task.go`に詳しい実装がある。
+
+  該当箇所: `/models/task.go` [L8-L48](https://github.com/okoge-kaz/todo-application/blob/main/models/task.go#L8-L48)
+
+- S-2.2
+
+  「タグやカテゴリにより，タスクをグルーピングする機能を追加し，検索機能を強化する」を実装した。
+
+  具体的には、タスクのステータス(例: Todo, In Progress, Done)を加えることで検索機能を強化した。
+
+  例えば、Todo のタスクのみを表示する、In Progress のタスクのみを表示する、Done のタスクのみを表示する、などが可能になった。
+
+  該当箇所: `/models/task.go` [L8-L48](https://github.com/okoge-kaz/todo-application/blob/main/models/task.go#L8-L48)
+
 #### 2.2 シークエンス図
 
 #### 2.3 データベース設計
