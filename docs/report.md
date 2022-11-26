@@ -253,9 +253,53 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   「ログイン機能を持つ」を実装した。
 
+  | 機能         | エンドポイント | 該当箇所 View               | 該当箇所 Controller                        |
+  | ------------ | -------------- | --------------------------- | ------------------------------------------ |
+  | ログイン     | `/login`       | `/views/login.html`         | `controllers/user_controller.Login`        |
+  | ログアウト   | `/logout`      | なし                        | `controllers/user_controller.Logout`       |
+  | ユーザー登録 | `/user/new`    | `/views/new_user_form.html` | `controllers/user_controller.RegisterUser` |
+
+  - ユーザー登録
+
+    フォームから username, password を受け取り、ユーザーを登録する。
+    その際に、username がすでに登録されているかどうかをチェックする。(同一 username のユーザーは登録できない仕様)
+
+    該当箇所: 重複チェック `/controllers/user_controller.go.RegisterUser` [L45-L55](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L45-L55)
+
+  - データベースへの保存
+
+    求められている仕様の通り、password はハッシュ化して保存する。
+
+    該当箇所: `controllers/user_controller.go.RegisterUser` [L57-L62](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L57-L62)
+
+  - ログイン
+
+    フォームから username, password を受け取り、ユーザーを認証する。
+    認証に成功した場合、セッションにユーザー情報を保存する。
+
+    該当箇所: `controllers/user_controller.go.Login` [L135-L165](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L135-L165)
+
+  - 自分の登録したタスクのみの表示
+
+    タスク情報取得時には、必ずユーザー ID に基づく絞り込みを行っている。そのため、仕様の要件は確保されている。
+
+    該当箇所: `models/task.go` [L8-L64](https://github.com/okoge-kaz/todo-application/blob/main/models/task.go#L8-L64)
+
 - S-1.4
 
   「簡単なアカウント管理機能を持つ」を実装した。
+
+  | 機能         | エンドポイント | 該当箇所 View               | 該当箇所 Controller                        |
+  | ------------ | -------------- | --------------------------- | ------------------------------------------ |
+  | アカウント情報変更 | `/user/change_password`    | `/views/change_password_form.html` | `controllers/user_controller.ChangeUserInfo` |
+  | アカウント削除 | `/user/delete`    | なし | `controllers/user_controller.DeleteUser` |
+
+  - アカウント情報変更
+
+    フォームから username, password を受け取り、ユーザー情報を更新する。
+    その際に、username がすでに登録されているかどうかをチェックする。(同一 username のユーザーは登録できない仕様)
+
+    該当箇所: 重複チェック `/controllers/user_controller.go.ChangeUserInfo` [L67-L77](
 
 - S-2.1
 

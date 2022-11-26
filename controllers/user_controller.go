@@ -85,14 +85,6 @@ func ChangeUserInfo(ctx *gin.Context) {
 	oldPassword := ctx.PostForm("old_password")
 	newPassword := ctx.PostForm("new_password")
 
-	if newUsername == "" {
-		newUsername = username
-	}
-
-	if newPassword == "" {
-		newPassword = oldPassword
-	}
-
 	if newPassword == "" {
 		ctx.HTML(http.StatusBadRequest, "change_password_form.html", gin.H{"Title": "Change password", "Error": "New password is not provided"})
 		return
@@ -107,6 +99,18 @@ func ChangeUserInfo(ctx *gin.Context) {
 	db, err := database.GetConnection()
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
+		return
+	}
+
+	// 重複チェック
+	var duplicate int
+	err = db.Get(&duplicate, "SELECT COUNT(*) FROM users WHERE name=?", newUsername)
+	if err != nil {
+		Error(http.StatusInternalServerError, err.Error())(ctx)
+		return
+	}
+	if duplicate > 0 { // count の結果が返却されるので
+		ctx.HTML(http.StatusBadRequest, "change_password_form.html", gin.H{"Title": "Register user", "Error": "Username is already taken"})
 		return
 	}
 
