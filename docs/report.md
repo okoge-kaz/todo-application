@@ -331,6 +331,14 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   該当箇所: `/models/task.go` [L8-L48](https://github.com/okoge-kaz/todo-application/blob/main/models/task.go#L8-L48)
 
+- その他
+
+  - CSS あてによる見た目の改善
+
+  - ヘッダー部分に Home, Login, Sign Up の動線を追加
+
+  - ログイン時とログアウト時で、Home のリンク動線を変更
+
 #### 2.2 シークエンス図
 
 #### 2.3 データベース設計
