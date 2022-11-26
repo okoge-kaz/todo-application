@@ -12,7 +12,7 @@ import (
 )
 
 // TaskList renders list of tasks in DB
-func TaskList(ctx *gin.Context) {
+func GetTasks(ctx *gin.Context) {
 	// get login user
 	userID := sessions.Default(ctx).Get("user_key").(uint64)
 
@@ -58,7 +58,7 @@ func TaskList(ctx *gin.Context) {
 }
 
 // ShowTask renders a task with given ID
-func ShowTask(ctx *gin.Context) {
+func GetTask(ctx *gin.Context) {
 	// parse ID given as a parameter
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -79,12 +79,12 @@ func ShowTask(ctx *gin.Context) {
 }
 
 // form to create new task
-func NewTaskForm(ctx *gin.Context) {
+func CreateTaskForm(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "form_new_task.html", gin.H{"Title": "New task registration"})
 }
 
 // create new task
-func NewTask(ctx *gin.Context) {
+func CreateTask(ctx *gin.Context) {
 	// get login user
 	userID := sessions.Default(ctx).Get("user_key")
 

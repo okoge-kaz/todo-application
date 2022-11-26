@@ -26,7 +26,7 @@ func Init() *gin.Engine {
 
 	// routing
 	engine.GET("/", controllers.Home)
-	engine.GET("/list", controllers.LoginCheck, controllers.TaskList)
+	engine.GET("/list", controllers.LoginCheck, controllers.GetTasks)
 
 	taskGroup := engine.Group("/task")
 	taskGroup.Use(controllers.LoginCheck)
@@ -34,10 +34,10 @@ func Init() *gin.Engine {
 	// Grouping /task/xxx
 	{
 		// Create, Update, Delete
-		taskGroup.GET("/new", controllers.NewTaskForm)
-		taskGroup.POST("/new", controllers.NewTask)
+		taskGroup.GET("/new", controllers.CreateTaskForm)
+		taskGroup.POST("/new", controllers.CreateTask)
 
-		taskGroup.GET("/:id", controllers.TaskAccessCheck, controllers.ShowTask) // ":id" is a parameter
+		taskGroup.GET("/:id", controllers.TaskAccessCheck, controllers.GetTask) // ":id" is a parameter
 		//:id
 		taskIDGroup := taskGroup.Group("/:id")
 		taskIDGroup.Use(controllers.TaskAccessCheck)
