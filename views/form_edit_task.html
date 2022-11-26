@@ -2,11 +2,11 @@
 <div class="container">
   <h1>Task {{ .Task.ID }}: edit</h1>
   <form action="/task/{{ .Task.ID }}/edit" method="POST">
-    <div>
+    <div class="block">
       <label>Title</label
-      ><input type="text" name="title" value="{{ .Task.Title }}" required />
+      ><input type="text" name="title" value="{{ .Task.Title }}" required class="search-form"/>
     </div>
-    <div>
+    <div class="block">
       <input
         type="radio"
         name="is_done"
@@ -31,33 +31,37 @@
         }}
       /><label>未完了</label>
     </div>
-    <div>
-      <label>Description</label>
-      <textarea name="description" value="{{ .Task.Description }}"></textarea>
+    <div class="task-form">
+      <div>
+        <label>Description</label>
+      </div>
+      <div>変更前: {{ .Task.Description }}</div>
+      <textarea name="description" ></textarea>
     </div>
     <div class="task-form">
+      <div>変更前: {{ .Task.DueDate }}</div>
       <label class="label">Due Date</label>
-      <input type="date" name="due_date" required value="{{ .Task.DueDate }}"/>
+      <input type="date" name="due_date" required/>
     </div>
     <div class="task-form">
       <label class="label">Status</label>
-      <select name="status" required value="{{ .Task.Status }}">
-        <option value="todo">Todo</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
+      <select name="status" required>
+        <option value="todo" {{ if eq .Task.Status "todo" }} selected {{ end }}>Todo</option>
+        <option value="in-progress" {{ if eq .Task.Status "in-progress" }} selected {{ end }}>In Progress</option>
+        <option value="done" {{ if eq .Task.Status "done" }} selected {{ end }}>Done</option>
       </select>
     </div>
     <div class="task-form">
       <label class="label">Priority</label>
-      <select name="priority" required value="{{ .Task.Priority }}">
-        <option value="1">Low</option>
-        <option value="2">Medium</option>
-        <option value="3">High</option>
+      <select name="priority" required >
+        <option value="1" {{ if eq .Task.Priority 1 }} selected {{ end }}>Low</option>
+        <option value="2" {{ if eq .Task.Priority 2 }} selected {{ end }}>Medium</option>
+        <option value="3" {{ if eq .Task.Priority 3 }} selected {{ end }}>High</option>
       </select>
     </div>
     <div>
-      <input type="submit" value="更新" />
-      <a href="/task/{{ .Task.ID }}"><button type="button">戻る</button></a>
+      <input type="submit" value="更新" class="search-button"/>
+      <a href="/task/{{ .Task.ID }}"><button type="button" class="search-button">戻る</button></a>
     </div>
   </form>
 </div>

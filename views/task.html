@@ -21,8 +21,8 @@
       </tr>
     </table>
   </div>
-  <a href="/list"><button type="button">リストへ戻る</button></a>
-  <a href="/task/{{ .ID }}/edit"><button type="button">編集</button></a>
-  <button type="button" onclick="confirm_delete({{ .ID }})">削除</button>
+  <a href="/list"><button type="button" class="search-button">リストへ戻る</button></a>
+  <a href="/task/{{ .ID }}/edit"><button type="button" class="search-button">編集</button></a>
+  <button type="button" onclick="confirm_delete({{ .ID }})" class="search-button">削除</button>
 </div>
 {{ template "footer" }}
