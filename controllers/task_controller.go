@@ -59,13 +59,6 @@ func TaskList(ctx *gin.Context) {
 
 // ShowTask renders a task with given ID
 func ShowTask(ctx *gin.Context) {
-	// Get DB connection
-	db, err := database.GetConnection()
-	if err != nil {
-		Error(http.StatusInternalServerError, err.Error())(ctx)
-		return
-	}
-
 	// parse ID given as a parameter
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -75,7 +68,7 @@ func ShowTask(ctx *gin.Context) {
 
 	// Get a task with given ID
 	var task database.Task
-	err = db.Get(&task, "SELECT * FROM tasks WHERE id=?", id) // Use DB#Get for one entry
+	task, err = models.GetTaskByTaskID(int(id))
 	if err != nil {
 		Error(http.StatusBadRequest, err.Error())(ctx)
 		return

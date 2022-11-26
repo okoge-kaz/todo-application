@@ -79,3 +79,19 @@ func GetTaskByUserIDAndKeywordAndStatus(userID int, keyword string, status []str
 
 	return tasks, nil
 }
+
+func GetTaskByTaskID(taskID int) (database.Task, error) {
+	// Get DB connection
+	db, err := database.GetConnection()
+	if err != nil {
+		return database.Task{}, err
+	}
+
+	var task database.Task
+	err = db.Get(&task, "SELECT * FROM tasks WHERE id = ?", taskID)
+	if err != nil {
+		return database.Task{}, err
+	}
+
+	return task, nil
+}
