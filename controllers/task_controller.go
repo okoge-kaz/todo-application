@@ -18,6 +18,10 @@ func TaskList(ctx *gin.Context) {
 
 	// Get query parameter
 	keyword := ctx.Query("keyword")
+	var status []string = ctx.QueryArray("status")
+	if len(status) == 0 {
+		status = []string{"todo", "in-progress", "done"}
+	}
 
 	// Get tasks in DB
 	var tasks []database.Task
@@ -26,10 +30,10 @@ func TaskList(ctx *gin.Context) {
 	switch {
 	case keyword != "":
 		// keyword search
-		tasks, err = models.GetTaskByUserIDAndKeyword(int(userID), keyword)
+		tasks, err = models.GetTaskByUserIDAndKeywordAndStatus(int(userID), keyword, status)
 	default:
 		// 全件取得
-		tasks, err = models.GetTaskByUserID(int(userID))
+		tasks, err = models.GetTaskByUserIDAndStatus(int(userID), status)
 	}
 	if err != nil {
 		Error(http.StatusInternalServerError, err.Error())(ctx)
