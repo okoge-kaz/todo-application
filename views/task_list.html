@@ -5,21 +5,22 @@
   <form action="/list" method="GET">
     <div class="check-box-item">
       <div>Status:</div>
-      <input type="checkbox" name="status" value="todo" />
+      <input type="checkbox" name="status" value="todo" {{ if .Todo }} checked {{ end }}/>
       <span>
         <span class=>Todo</span>
       </span>
     </div>
 
     <div class="check-box-item">
-      <input type="checkbox" name="status" value="in-progress" />
+      <input type="checkbox" name="status" value="in-progress" {{ if .InProgress }} checked {{ end }}/>
       <span>
         <span>In Progress</span>
+        {{.InProgress}}
       </span>
     </div>
 
     <div class="check-box-item">
-      <input type="checkbox" name="status" value="done" />
+      <input type="checkbox" name="status" value="done"  {{ if .Done }} checked {{ end }}/>
       <span>
         <span>Done</span>
       </span>

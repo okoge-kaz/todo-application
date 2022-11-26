@@ -23,6 +23,19 @@ func TaskList(ctx *gin.Context) {
 		status = []string{"todo", "in-progress", "done"}
 	}
 
+	// search condition save
+	todo, inProgress, done := false, false, false
+	for _, s := range status {
+		switch s {
+		case "todo":
+			todo = true
+		case "in-progress":
+			inProgress = true
+		case "done":
+			done = true
+		}
+	}
+
 	// Get tasks in DB
 	var tasks []database.Task
 	var err error
@@ -41,7 +54,7 @@ func TaskList(ctx *gin.Context) {
 	}
 
 	// Render tasks
-	ctx.HTML(http.StatusOK, "task_list.html", gin.H{"Title": "Task list", "Tasks": tasks, "Keyword": keyword})
+	ctx.HTML(http.StatusOK, "task_list.html", gin.H{"Title": "Task list", "Tasks": tasks, "Keyword": keyword, "Todo": todo, "InProgress": inProgress, "Done": done})
 }
 
 // ShowTask renders a task with given ID
