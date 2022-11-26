@@ -143,15 +143,10 @@ func EditTaskForm(ctx *gin.Context) {
 		Error(http.StatusBadRequest, err.Error())(ctx)
 		return
 	}
-	// Get DB connection
-	db, err := database.GetConnection()
-	if err != nil {
-		Error(http.StatusInternalServerError, err.Error())(ctx)
-		return
-	}
+
 	// Get target task
 	var task database.Task
-	err = db.Get(&task, "SELECT * FROM tasks WHERE id=?", id)
+	task, err = models.GetTaskByTaskID(int(id))
 	if err != nil {
 		Error(http.StatusBadRequest, err.Error())(ctx)
 		return
