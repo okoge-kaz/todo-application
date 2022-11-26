@@ -277,7 +277,7 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
     フォームから username, password を受け取り、ユーザーを認証する。
     認証に成功した場合、セッションにユーザー情報を保存する。
 
-    該当箇所: `controllers/user_controller.go.Login` [L135-L165](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L135-L165)
+    該当箇所: `controllers/user_controller.go.Login` [L147-L177](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L147-L177)
 
   - 自分の登録したタスクのみの表示
 
@@ -289,17 +289,25 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   「簡単なアカウント管理機能を持つ」を実装した。
 
-  | 機能         | エンドポイント | 該当箇所 View               | 該当箇所 Controller                        |
-  | ------------ | -------------- | --------------------------- | ------------------------------------------ |
-  | アカウント情報変更 | `/user/change_password`    | `/views/change_password_form.html` | `controllers/user_controller.ChangeUserInfo` |
-  | アカウント削除 | `/user/delete`    | なし | `controllers/user_controller.DeleteUser` |
+  | 機能               | エンドポイント          | 該当箇所 View                      | 該当箇所 Controller                          |
+  | ------------------ | ----------------------- | ---------------------------------- | -------------------------------------------- |
+  | アカウント情報変更 | `/user/change_password` | `/views/change_password_form.html` | `controllers/user_controller.ChangeUserInfo` |
+  | アカウント削除     | `/user/delete`          | なし                               | `controllers/user_controller.DeleteUser`     |
 
   - アカウント情報変更
 
-    フォームから username, password を受け取り、ユーザー情報を更新する。
-    その際に、username がすでに登録されているかどうかをチェックする。(同一 username のユーザーは登録できない仕様)
+    フォームから nwe_username, new_password を受け取り、ユーザー情報を更新する。
+    更新前に、変更前 username, 変更前 password による認証を行う。
 
-    該当箇所: 重複チェック `/controllers/user_controller.go.ChangeUserInfo` [L67-L77](
+    その際に、new_username がすでに登録されているかどうかをチェックする。(同一 username のユーザーは登録できない仕様)
+    また、password はハッシュ化して保存する。
+
+    該当箇所: `/controllers/user_controller.go.ChangeUserInfo` [L81-L137](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L81-L137)
+
+  - アカウント削除
+
+    アカウントを削除することが可能である。ユーザー情報のみ削除し、タスク情報は削除しない。
+    該当箇所: `/controllers/user_controller.go.DeleteUser` [L212-L239](https://github.com/okoge-kaz/todo-application/blob/main/controllers/user_controller.go#L212-L239)
 
 - S-2.1
 
