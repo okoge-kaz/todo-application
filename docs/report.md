@@ -415,13 +415,13 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
   - SSR とは、クライアント側で HTML を生成するのではなく、サーバー側で HTML を生成することのこと
   - 利点:
 
-  CSR(Client Side Rendering)と異なり、サーバー側で HTML を生成するため、SEO に強い。また、SSG(Static Site Generation)(近年は SG))のような静的なサイトだけでなく、動的なサイトにも適応できる。
+    CSR(Client Side Rendering)と異なり、サーバー側で HTML を生成するため、SEO に強い。また、SSG(Static Site Generation)(近年は SG))とは異なり静的なサイトだけでなく、動的なサイトにも適応できる。
 
-  低スペック端末においても、ユーザー体験が損なわれにくい。（CSRのようにクライアントでレンダリングしないため）
+    さらに低スペック端末においても、ユーザー体験が損なわれにくい。（CSRのようにクライアントでレンダリングしないため）
 
   - 欠点:
 
-  CSR と比べて、サーバー側で HTML を生成するため、サーバーの負荷が高くなる。(金銭的な負担大)
+    CSR と比べてサーバー側で HTML を生成するため、サーバーの負荷が高くなる。(金銭的な負担大)
 
 #### 3.5 自由記述欄
 
