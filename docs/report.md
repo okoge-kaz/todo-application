@@ -50,8 +50,8 @@
 
 - Accept
 
-  - クライアントが受け付けるレスポンスのメディアタイプを指定する
-  - サーバーはこの情報を元に、クライアントが受け付けるレスポンスのメディアタイプを判断する
+  - クライアントが受けつけるレスポンスのメディアタイプを指定する
+  - サーバーはこの情報を元に、クライアントが受けつけるレスポンスのメディアタイプを判断する
 
     例: `text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9` (Tokyo Tech Portal)
 
@@ -64,15 +64,15 @@
 
 - Accept-Encoding
 
-  - クライアントが受け付けるレスポンスのエンコーディングを指定する
-  - サーバーはこの情報を元に、クライアントが受け付けるレスポンスのエンコーディングを判断する (gzip など)
+  - クライアントが受けつけるレスポンスのエンコーディングを指定する
+  - サーバーはこの情報を元に、クライアントが受けつけるレスポンスのエンコーディングを判断する (gzip など)
 
     例: Tokyo Tech Portal では`Accept-Encoding: gzip, deflate, br`
 
 - Accept-Language
 
-  - クライアントが受け付けるレスポンスの言語を指定する
-  - サーバーはこの情報を元に、クライアントが受け付けるレスポンスの言語を判断する (Tokyo Tech Portal では `Accept-Language: en-US,en;q=0.9,ja;q=0.8`)
+  - クライアントが受けつけるレスポンスの言語を指定する
+  - サーバーはこの情報を元に、クライアントが受けつけるレスポンスの言語を判断する (Tokyo Tech Portal では `Accept-Language: en-US,en;q=0.9,ja;q=0.8`)
 
 - Content-Type
 
@@ -424,3 +424,17 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
   CSR と比べて、サーバー側で HTML を生成するため、サーバーの負荷が高くなる。(金銭的な負担大)
 
 #### 3.5 自由記述欄
+
+- 学べたこと
+
+  Go GinでのWeb Application開発をした経験がなかったため、Go周りの知識が身についた。
+
+  また、「詳解セキュリティコンテスト」を積読していたので、その本を読みながら、Web Applicationセキュリティについても学ぶことができた。
+
+- 心残り
+
+  実装工数などから断念したが、Backend: Go Gin, Frontend: React, Database: MySQLを使って、Web Applicationを作成することを目指していた。実際、[GitHub: okoge-kaz/golang-todo-application](https://github.com/okoge-kaz/golang-todo-application)にて作成したいた。
+
+  SQL操作についても、sqlxではなくgormを使うなど、講義とは異なる方法での実装を試していた。
+
+  また、バックエンドはHTMLを返すことはなく、あくまでAPIサーバーとしての役割を果たすことを意識して実装をしたいた。また、Railsライクなディレクトリ構成を意識して、`controllers/, models/, helpers/`などのディレクトリを作成してコードの整理を行っていた。
