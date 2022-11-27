@@ -333,7 +333,37 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 #### 2.2 シークエンス図
 
+ユーザーとアプリケーションとのやり取りは、`/router/router.go`の内容が主。また、アプリケーションと DB とのやり取りは、`/models/task.go`, `/models/user.go`が担うべきであるが、今回は`/controllers/*`にも DB との処理が記載されている。 シークエンス図では、ログインチェックや、詳細なやり取りは省略し、主要な処理のみを記載した。
+
+- タスク編集機能
+
+![](/public/sequence/task-edit.png)
+
+- タスク検索機能
+
+![](/public/sequence/task-search.png)
+
+- ログイン機能
+
+![](/public/sequence/user-login.png)
+
 #### 2.3 データベース設計
+
+テーブルの関係性は以下の通り。
+
+- tasks
+
+  タスクの情報を格納するテーブル。(primary key: id)
+
+- users
+
+  ユーザーの情報を格納するテーブル。(primary key: id)
+
+- ownerships
+
+  ユーザーとタスクの関係を格納するテーブル。(primary key: [user_id, task_id])
+
+![](/public/ER.png)
 
 ## 加点課題
 
