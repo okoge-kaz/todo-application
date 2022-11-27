@@ -433,8 +433,8 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 - 心残り
 
-  実装工数などから断念したが、Backend: Go Gin, Frontend: React, Database: MySQLを使って、Web Applicationを作成することを目指していた。実際、[GitHub: okoge-kaz/golang-todo-application](https://github.com/okoge-kaz/golang-todo-application)にて作成したいた。
+  実装工数などから断念したが、Backend: Go Gin, Frontend: React, Database: MySQLを使って、Web Applicationを作成することを目指していた。実際、[GitHub: okoge-kaz/golang-todo-application](https://github.com/okoge-kaz/golang-todo-application)にて作成していた。
 
-  SQL操作についても、sqlxではなくgormを使うなど、講義とは異なる方法での実装を試していた。
+  上述のリポジトリでは、SQL操作はsqlxではなくgormを使うなど、講義とは異なる方法での実装を試していた。
 
-  また、バックエンドはHTMLを返すことはなく、あくまでAPIサーバーとしての役割を果たすことを意識して実装をしたいた。また、Railsライクなディレクトリ構成を意識して、`controllers/, models/, helpers/`などのディレクトリを作成してコードの整理を行っていた。
+  また、バックエンドはHTMLを返すことはなく、あくまでAPIサーバーとしての役割を果たすことを意識して実装をしたいた。加えてRailsライクなディレクトリ構成を意識して、`controllers/, models/, helpers/`などのディレクトリを作成してコードの整理を行っていた。
