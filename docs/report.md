@@ -83,29 +83,21 @@
 
 #### 1.3 HTTP Method Idempotence and Safe
 
-- GET
+参考資料: MDN Web Docs - [HTTP の安全](https://developer.mozilla.org/ja/docs/Glossary/Safe), [HTTP の幂等](https://developer.mozilla.org/ja/docs/Glossary/Idempotent), Real World HTTP (オライリー・ジャパン)
 
-  - Idempotence: Yes
-  - Safe: Yes
+- Idempotence
 
-- HEAD
+  特定のリクエストを複数回送信しても、サーバーが同じ状況であるときは同じ結果を返すことを指す。GET, HEAD, PUT, DELETE は冪等である。
 
-  - Idempotence: Yes
-  - Safe: Yes
+- Safe
 
-- POST
+  HTTP メソッドが安全であるとは、そのメソッドを実行してもサーバーの状態を変更しないことを指す。GET, HEAD などは安全である。PUT, DELETE は冪等ではあるが、安全ではない。
 
-  - Idempotence: No
-  - Safe: No
+バックエンドの処理を記述する際に、その HTTP Request Method が満たすべき条件を考えないと、意図しない挙動を起こしてしまう可能性がある。
 
-- PUT
+例えば、副作用のある変更を行う処理を GET メソッドで実装してしまうと、ブラウザのリロードボタンを押すだけで、リソースの変更が行われてしまう。
 
-  - Idempotence: Yes
-  - Safe: No
-
-- DELETE
-  - Idempotence: Yes
-  - Safe: No
+このように、安全性、冪等性を考慮した実装を行うことは、バックエンドの実装を行う上で重要なことである。
 
 ### 2. タスク管理アプリケーション
 
