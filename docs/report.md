@@ -369,17 +369,6 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
 ### 3. Web アプリケーション開発
 
-#### 3.1. Stateless Type and Session Type
-
-- Stateless Type
-
-  - サーバーはクライアントの状態を保持しない
-  - クライアントはリクエストごとにサーバーに対して認証情報を送信する必要がある
-
-- Session Type
-  - サーバーはクライアントの状態を保持する
-  - クライアントはリクエストごとにサーバーに対して認証情報を送信する必要がない
-
 #### 3.2 SQL Injection
 
 参考: 詳解セキュリティコンテスト 9章 SQL Injection
