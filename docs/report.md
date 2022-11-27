@@ -437,4 +437,4 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
 
   上述のリポジトリでは、SQL操作はsqlxではなくgormを使うなど、講義とは異なる方法での実装を試していた。
 
-  また、バックエンドはHTMLを返すことはなく、あくまでAPIサーバーとしての役割を果たすことを意識して実装をしたいた。加えてRailsライクなディレクトリ構成を意識して、`controllers/, models/, helpers/`などのディレクトリを作成してコードの整理を行っていた。
+  また、バックエンドはHTMLを返すことはなく、あくまでAPIサーバーとしての役割を果たすことを意識して実装をしていた。加えてRailsライクなディレクトリ構成を意識して、`controllers/, models/, helpers/`などのディレクトリを作成してコードの整理を行っていた。
